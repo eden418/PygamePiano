@@ -37,6 +37,9 @@ def handle_motion(mouse_pos):
             else:
                 key.color = (0, 0, 0)
 
+def handle_click(mouse_pos):
+    pass
+
 def main():
     run = True
     while run:
@@ -48,6 +51,8 @@ def main():
                 return
             if event.type == pygame.MOUSEMOTION:
                 handle_motion(mouse_pos)
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                handle_click(mouse_pos)
 
         draw_window()
 
