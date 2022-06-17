@@ -1,26 +1,28 @@
 import pygame
+import os
 
 
 class Button:
-    def __init__(self, color, x, y, width, height, text='', text_color=(0,0,0)):
+    def __init__(self, color, x, y, width, height, text='', sound_filename=''):
         self.color = color
         if color == (0,0,0):
             self.isWhite = False
+            self.text_color = (255,255,255)
         else:
             self.isWhite = True
+            self.text_color = (0,0,0)
         self.x = x
         self.y = y
         self.width = width
         self.height = height
         self.text = text
-        self.text_color = text_color
+        self.sound = pygame.mixer.Sound(os.path.join('piano notes', sound_filename))
 
-
-    def draw(self, win, outline=None):
-        if outline:
+    def draw(self, win):
+        if self.isWhite:
             # The way to draw an outline is to go back two in the origin
             # And add 4 (two from each side) to the width and height
-            pygame.draw.rect(win, outline,
+            pygame.draw.rect(win, (0,0,0),
                              (self.x - 2, self.y - 2,
                               self.width + 4, self.height + 4), 0)
 
@@ -39,3 +41,9 @@ class Button:
             if self.y < pos[1] < self.y + self.height:
                 return True
         return False
+
+    def play(self):
+        self.sound.play()
+
+    def stop(self):
+        self.sound.stop()
