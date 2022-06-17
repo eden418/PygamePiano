@@ -30,6 +30,21 @@ B4 = Button(WHITE, 600, 0, 100, HEIGHT, "B4", 'Piano.ff.B4.mp3')
 
 keys_list = [C4, D4, Db4, E4, F4, Eb4, G4, Gb4, A4, Ab4, B4, Bb4]
 
+keybinds = {
+    pygame.K_a: C4,
+    pygame.K_w: Db4,
+    pygame.K_s: D4,
+    pygame.K_e: Eb4,
+    pygame.K_d: E4,
+    pygame.K_f: F4,
+    pygame.K_t: Gb4,
+    pygame.K_g: G4,
+    pygame.K_y: Ab4,
+    pygame.K_h: A4,
+    pygame.K_u: Bb4,
+    pygame.K_j: B4
+}
+
 def draw_window():
     WIN.fill(WHITE)
     for key in keys_list:
@@ -77,82 +92,17 @@ def handle_click(mouse_pos):
         B4.play()
 
 def handle_pressed_key(pressed_key):
-    if pressed_key == pygame.K_a:
-        C4.play()
-        C4.color = LIGHT_GRAY
-    if pressed_key == pygame.K_w:
-        Db4.play()
-        Db4.color = DARK_GRAY
-    if pressed_key == pygame.K_s:
-        D4.play()
-        D4.color = LIGHT_GRAY
-    if pressed_key == pygame.K_e:
-        Eb4.play()
-        Eb4.color = DARK_GRAY
-    if pressed_key == pygame.K_d:
-        E4.play()
-        E4.color = LIGHT_GRAY
-    if pressed_key == pygame.K_f:
-        F4.play()
-        F4.color = LIGHT_GRAY
-    if pressed_key == pygame.K_t:
-        Gb4.play()
-        Gb4.color = DARK_GRAY
-    if pressed_key == pygame.K_g:
-        G4.play()
-        G4.color = LIGHT_GRAY
-    if pressed_key == pygame.K_y:
-        Ab4.play()
-        Ab4.color = DARK_GRAY
-    if pressed_key == pygame.K_h:
-        A4.color = LIGHT_GRAY
-        A4.play()
-    if pressed_key == pygame.K_u:
-        Bb4.play()
-        Bb4.color = DARK_GRAY
-    if pressed_key == pygame.K_j:
-        B4.play()
-        B4.color = LIGHT_GRAY
-
+    try:
+        keybinds[pressed_key].pressed()
+    except KeyError:
+        pass
 
 
 def handle_unpressed_key(unpressed_key):
-    if unpressed_key == pygame.K_a:
-        C4.stop()
-        C4.color = WHITE
-    if unpressed_key == pygame.K_w:
-        Db4.stop()
-        Db4.color = BLACK
-    if unpressed_key == pygame.K_s:
-        D4.stop()
-        D4.color = WHITE
-    if unpressed_key == pygame.K_e:
-        Eb4.stop()
-        Eb4.color = BLACK
-    if unpressed_key == pygame.K_d:
-        E4.stop()
-        E4.color = WHITE
-    if unpressed_key == pygame.K_f:
-        F4.stop()
-        F4.color = WHITE
-    if unpressed_key == pygame.K_t:
-        Gb4.stop()
-        Gb4.color = BLACK
-    if unpressed_key == pygame.K_g:
-        G4.stop()
-        G4.color = WHITE
-    if unpressed_key == pygame.K_y:
-        Ab4.stop()
-        Ab4.color = BLACK
-    if unpressed_key == pygame.K_h:
-        A4.stop()
-        A4.color = WHITE
-    if unpressed_key == pygame.K_u:
-        Bb4.stop()
-        Bb4.color = BLACK
-    if unpressed_key == pygame.K_j:
-        B4.stop()
-        B4.color = WHITE
+    try:
+        keybinds[unpressed_key].unpressed()
+    except KeyError:
+        pass
 
 
 def main():

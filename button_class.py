@@ -47,3 +47,17 @@ class Button:
 
     def stop(self):
         self.sound.stop()
+
+    def pressed(self):
+        self.sound.play()
+        if self.isWhite:
+            self.color = (211, 211, 211)
+        elif not self.isWhite:
+            self.color = (49, 49, 49)
+
+    def unpressed(self):
+        self.sound.stop()
+        if self.isWhite:
+            self.color = (250, 250, 250)
+        elif not self.isWhite:
+            self.color = (0, 0, 0)
