@@ -3,7 +3,7 @@ import os
 
 
 class Button:
-    def __init__(self, name, color, x, y, width, height, text='', sound_filename=''):
+    def __init__(self, name, color, x, y, width, height, text='', keybind:int=None, sound_filename=''):
         self.color = color
         if color == (0,0,0):
             self.isWhite = False
@@ -16,6 +16,7 @@ class Button:
         self.width = width
         self.height = height
         self.text = text
+        self.keybind = keybind
         self.sound = pygame.mixer.Sound(os.path.join('piano notes', sound_filename))
         self.name = name
 
@@ -35,7 +36,13 @@ class Button:
             # Center the text by starting in x adding, half the width
             # of the button minus half the width of the text
             win.blit(text, (self.x + (self.width / 2 - text.get_width() / 2),
-                                    self.y + (self.height / 2 - text.get_height() / 2)))
+                            self.y + (self.height / 2 - text.get_height() / 2)))
+
+        if self.keybind is not None:
+            keybind_font = pygame.font.SysFont('comicsans', 25)
+            keybind_text = keybind_font.render(pygame.key.name(self.keybind), True, (150, 150, 150))
+            win.blit(keybind_text, (self.x + (self.width / 2 - keybind_text.get_width() / 2),
+                                    self.y + (self.height / 2 - keybind_text.get_height()/2 + 30)))
 
     def isOver(self, pos):
         if self.x < pos[0] < self.x + self.width:
