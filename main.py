@@ -1,12 +1,14 @@
 import pygame
 import os
+import subprocess
+from time import sleep
 
 from button_class import Button
 
 pygame.font.init()
 pygame.mixer.init()
 
-WIDTH, HEIGHT = 1200, 400
+WIDTH, HEIGHT = 1400, 400
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Eden's Piano")
 
@@ -15,34 +17,61 @@ BLACK = (0, 0, 0)
 LIGHT_GRAY = (211, 211, 211)
 DARK_GRAY = (49, 49, 49)
 
-C4 = Button(WHITE, 0, 0, 100, HEIGHT, "C4", 'Piano.ff.C4.mp3')
-Db4 = Button(BLACK, 75, 0, 50, 250, "Db4", 'Piano.ff.Db4.mp3')
-D4 = Button(WHITE, 100, 0, 100, HEIGHT, "D4", 'Piano.ff.D4.mp3')
-Eb4 = Button(BLACK, 175, 0, 50, 250, "Eb4", 'Piano.ff.Eb4.mp3')
-E4 = Button(WHITE, 200, 0, 100, HEIGHT, "E4", 'Piano.ff.E4.mp3')
-F4 = Button(WHITE, 300, 0, 100, HEIGHT, "F4", 'Piano.ff.F4.mp3')
-Gb4 = Button(BLACK, 375, 0, 50, 250, "Gb4", 'Piano.ff.Gb4.mp3')
-G4 = Button(WHITE, 400, 0, 100, HEIGHT, "G4", 'Piano.ff.G4.mp3')
-Ab4 = Button(BLACK, 475, 0, 50, 250, "Ab4", 'Piano.ff.Ab4.mp3')
-A4 = Button(WHITE, 500, 0, 100, HEIGHT, "A4", 'Piano.ff.A4.mp3')
-Bb4 = Button(BLACK, 575, 0, 50, 250, "Bb4", 'Piano.ff.Bb4.mp3')
-B4 = Button(WHITE, 600, 0, 100, HEIGHT, "B4", 'Piano.ff.B4.mp3')
+C3 = Button("c", WHITE, 0, 0, 100, HEIGHT, "C3", 'Piano.ff.C3.mp3')
+Db3 = Button("des", BLACK, 75, 0, 50, 250, "Db3", 'Piano.ff.Db3.mp3')
+D3 = Button("d", WHITE, 100, 0, 100, HEIGHT, "D3", 'Piano.ff.D3.mp3')
+Eb3 = Button("ees", BLACK, 175, 0, 50, 250, "Eb3", 'Piano.ff.Eb3.mp3')
+E3 = Button("e", WHITE, 200, 0, 100, HEIGHT, "E3", 'Piano.ff.E3.mp3')
+F3 = Button("f", WHITE, 300, 0, 100, HEIGHT, "F3", 'Piano.ff.F3.mp3')
+Gb3 = Button("ges", BLACK, 375, 0, 50, 250, "Gb3", 'Piano.ff.Gb3.mp3')
+G3 = Button("g", WHITE, 400, 0, 100, HEIGHT, "G3", 'Piano.ff.G3.mp3')
+Ab3 = Button("aes", BLACK, 475, 0, 50, 250, "Ab3", 'Piano.ff.Ab3.mp3')
+A3 = Button("a", WHITE, 500, 0, 100, HEIGHT, "A3", 'Piano.ff.A3.mp3')
+Bb3 = Button("bes", BLACK, 575, 0, 50, 250, "Bb3", 'Piano.ff.Bb3.mp3')
+B3 = Button("b", WHITE, 600, 0, 100, HEIGHT, "B3", 'Piano.ff.B3.mp3')
+C4 = Button("c'", WHITE, 700, 0, 100, HEIGHT, "C4", 'Piano.ff.C4.mp3')
+Db4 = Button("des'", BLACK, 775, 0, 50, 250, "Db4", 'Piano.ff.Db4.mp3')
+D4 = Button("d'", WHITE, 800, 0, 100, HEIGHT, "D4", 'Piano.ff.D4.mp3')
+Eb4 = Button("ees'", BLACK, 875, 0, 50, 250, "Eb4", 'Piano.ff.Eb4.mp3')
+E4 = Button("e'", WHITE, 900, 0, 100, HEIGHT, "E4", 'Piano.ff.E4.mp3')
+F4 = Button("f'", WHITE, 1000, 0, 100, HEIGHT, "F4", 'Piano.ff.F4.mp3')
+Gb4 = Button("ges'", BLACK, 1075, 0, 50, 250, "Gb4", 'Piano.ff.Gb4.mp3')
+G4 = Button("g'", WHITE, 1100, 0, 100, HEIGHT, "G4", 'Piano.ff.G4.mp3')
+Ab4 = Button("aes'", BLACK, 1175, 0, 50, 250, "Ab4", 'Piano.ff.Ab4.mp3')
+A4 = Button("a'", WHITE, 1200, 0, 100, HEIGHT, "A4", 'Piano.ff.A4.mp3')
+Bb4 = Button("bes'", BLACK, 1275, 0, 50, 250, "Bb4", 'Piano.ff.Bb4.mp3')
+B4 = Button("b'", WHITE, 1300, 0, 100, HEIGHT, "B4", 'Piano.ff.B4.mp3')
 
-keys_list = [C4, D4, Db4, E4, F4, Eb4, G4, Gb4, A4, Ab4, B4, Bb4]
+keys_list = [C3, D3, Db3, E3, F3, Eb3, G3, Gb3, A3, Ab3, B3, Bb3, C4, D4, Db4, E4, F4, Eb4, G4, Gb4, A4, Ab4, B4, Bb4]
+
+played_list = []
+path = '/home/leo/Documents/PythonProjects/PygamePiano/sheet.pdf'
 
 keybinds = {
-    pygame.K_a: C4,
+    pygame.K_a: C3,
+    pygame.K_s: Db3,
+    pygame.K_d: D3,
+    pygame.K_f: Eb3,
+    pygame.K_g: E3,
+    pygame.K_h: F3,
+    pygame.K_j: Gb3,
+    pygame.K_k: G3,
+    pygame.K_l: Ab3,
+    pygame.K_SEMICOLON: A3,
+    39: Bb3,
+    pygame.K_RSHIFT: B3,
+    pygame.K_q: C4,
     pygame.K_w: Db4,
-    pygame.K_s: D4,
-    pygame.K_e: Eb4,
-    pygame.K_d: E4,
-    pygame.K_f: F4,
-    pygame.K_t: Gb4,
-    pygame.K_g: G4,
-    pygame.K_y: Ab4,
-    pygame.K_h: A4,
-    pygame.K_u: Bb4,
-    pygame.K_j: B4
+    pygame.K_e: D4,
+    pygame.K_r: Eb4,
+    pygame.K_t: E4,
+    pygame.K_y: F4,
+    pygame.K_u: Gb4,
+    pygame.K_i: G4,
+    pygame.K_o: Ab4,
+    pygame.K_p: A4,
+    pygame.K_LEFTBRACKET: Bb4,
+    pygame.K_RIGHTBRACKET: B4
 }
 
 def draw_window():
@@ -66,7 +95,31 @@ def handle_motion(mouse_pos):
                 key.color = BLACK
 
 def handle_click(mouse_pos):
-    if Db4.isOver(mouse_pos):
+    if Db3.isOver(mouse_pos):
+        Db3.play()
+    elif C3.isOver(mouse_pos):
+        C3.play()
+    elif Eb3.isOver(mouse_pos):
+        Eb3.play()
+    elif D3.isOver(mouse_pos):
+        D3.play()
+    elif E3.isOver(mouse_pos):
+        E3.play()
+    elif Gb3.isOver(mouse_pos):
+        Gb3.play()
+    elif F3.isOver(mouse_pos):
+        F3.play()
+    elif Ab3.isOver(mouse_pos):
+        Ab3.play()
+    elif G3.isOver(mouse_pos):
+        G3.play()
+    elif Bb3.isOver(mouse_pos):
+        Bb3.play()
+    elif A3.isOver(mouse_pos):
+        A3.play()
+    elif B3.isOver(mouse_pos):
+        B3.play()
+    elif Db4.isOver(mouse_pos):
         Db4.play()
     elif C4.isOver(mouse_pos):
         C4.play()
@@ -94,6 +147,7 @@ def handle_click(mouse_pos):
 def handle_pressed_key(pressed_key):
     try:
         keybinds[pressed_key].pressed()
+        played_list.append(keybinds[pressed_key].name)
     except KeyError:
         pass
 
@@ -104,7 +158,27 @@ def handle_unpressed_key(unpressed_key):
     except KeyError:
         pass
 
-
+def write_sheet(notes):
+    with open('sheet.ly', 'w') as sheet_file:
+        sheet_file.write('\\version "2.22.2"\n')
+        sheet_file.write("upper = {\n")
+        sheet_file.write("\\clef treble\n")
+        for note in notes:
+            if note[-1] == "'":
+                sheet_file.write(f" {note} ")
+        sheet_file.write("\n}\nlower = {\n")
+        sheet_file.write("\\clef bass")
+        for note in notes:
+            if note[-1] != "'":
+                sheet_file.write(f" {note}")
+        sheet_file.write("\n}\n\\score {\n")
+        sheet_file.write("\\new PianoStaff\n")
+        sheet_file.write('<<\\new Staff = "upper" \\upper\n')
+        sheet_file.write('\\new Staff = "lower" \\lower>>')
+        sheet_file.write("\n}")
+    os.system('lilypond sheet.ly')
+    subprocess.call(["xdg-open", path])
+    
 def main():
     run = True
     while run:
@@ -124,6 +198,7 @@ def main():
                 handle_pressed_key(event.key)
             if event.type == pygame.KEYUP:
                 handle_unpressed_key(event.key)
+    write_sheet(played_list)
 
 if __name__ == '__main__':
     main()

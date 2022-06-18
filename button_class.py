@@ -3,7 +3,7 @@ import os
 
 
 class Button:
-    def __init__(self, color, x, y, width, height, text='', sound_filename=''):
+    def __init__(self, name, color, x, y, width, height, text='', sound_filename=''):
         self.color = color
         if color == (0,0,0):
             self.isWhite = False
@@ -17,6 +17,7 @@ class Button:
         self.height = height
         self.text = text
         self.sound = pygame.mixer.Sound(os.path.join('piano notes', sound_filename))
+        self.name = name
 
     def draw(self, win):
         if self.isWhite:
